@@ -1,0 +1,61 @@
+splash:
+  page1:
+    title: "🎯 It’s Really That Simple"
+    subtitle_1: "Tap in your details."
+    subtitle_2: "Sign the agreement."
+    subtitle_3: "Cash heads your way. 💸 "
+  page2:
+    title: "🤔 Quick Question…"
+    subtitle: "How’s the app treating you? Rate us below ⬇️"
+  page3:
+    title: "🙃 Not the Best, Huh?"
+    subtitle: "No worries—tell us what went wrong so we can fix it up for you."
+    hintText: "Tell us what went wrong..."
+    validation_text: "Please enter at least 3 characters"
+  page4:
+    title: "💡 We Hear You"
+    subtitle: "Thanks for being honest. Every bit of feedback helps us get better."
+  page5:
+    title: "🎉 High-Five!"
+    subtitle: "Loving the app? Spread the word on App Store and help more people discover it."
+  button_submit: "Submit"
+  button_send: "Send"
+  button_continue: "Continue"
+  button_get_cash: "Get My Cash 🚀"
+  button_rate: "Rate on the {}"
+
+
+
+onboarding:
+  step1:
+    title: "Your Safety \nLoan App"
+    subtitle: "Safe and simple financial solutions"
+  step2:
+    title: "Fast Money, \nSimple Steps"
+    subtitle: "The Smarter Way to Borrow"
+
+main:
+  title: "3 Easy Steps to \nMoney"
+  benefits1: "Submit Your Loan Request"
+  benefits2: "Check Your Approval"
+  benefits3: "Receive Money"
+  card:
+    title: "Get Money Fast \nFor Any Needs"
+    safe: "Your data is safe"
+
+terms:
+  title: "Terms of Use"
+privacy:
+  title: "Privacy Policy"
+
+webview:
+  title: 'Fast Loan Setup'
+
+offline:
+  title: "Oops! You're Offline"
+  subtitle: 'Looks like there’s no internet.\nReconnect to keep things moving smoothly.'
+  button: "Try again"
+
+buttons:
+  start: "Ready to Start"
+  main: "Get a loan"

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1033908144941",
+    "project_id": "app039-a5081",
+    "storage_bucket": "app039-a5081.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1033908144941:android:182e6f4f3d6eab3dffa1a4",
+        "android_client_info": {
+          "package_name": "com.payday.advance.borrow.money"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtAflrVio9I1zMMSzpy5m4FGmPAqamTz4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
