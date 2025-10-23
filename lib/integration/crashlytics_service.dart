@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 
-/// Сервіс для налаштування глобальної обробки помилок
 class CrashlyticsService {
   static Future<void> init() async {
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;

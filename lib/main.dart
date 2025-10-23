@@ -17,7 +17,7 @@ import 'sections/splash/providers/splash_notifier.dart';
 import 'sections/splash/providers/survey_notifier.dart';
 
 void main() async {
-  final wb = WidgetsFlutterBinding.ensureInitialized();
+  final wfb = WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await CrashlyticsService.init();
@@ -34,8 +34,7 @@ void main() async {
 
   await WakelockPlus.enable();
 
-  FlutterNativeSplash.preserve(widgetsBinding: wb);
-
+  FlutterNativeSplash.preserve(widgetsBinding: wfb);
 
   runApp(
     EasyLocalization(

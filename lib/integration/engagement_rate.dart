@@ -3,7 +3,6 @@ import 'package:logger/logger.dart';
 
 import '../../domain/repositories/preferences_repository.dart';
 
-/// Service for show in_app_review
 class EngagementRate {
   final Logger _logger;
   final InAppReview _reviewApi;
