@@ -63,6 +63,6 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1033908144941',
     projectId: 'app039-a5081',
     storageBucket: 'app039-a5081.firebasestorage.app',
-    iosBundleId: 'com.payday.advance.borrow.money',
+    iosBundleId: 'com.payday.borrow.money.advance.app',
   );
 }

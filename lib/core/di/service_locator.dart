@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,14 +33,6 @@ Future<void> initDependencies() async {
   // Local storage
   final prefsStorage = PrefsStorage(shared);
 
-  //FB Remote
-  final fbRemote = await FirebaseRemote.init();
-  getIt.registerSingleton<FirebaseRemote>(fbRemote);
-
-  getIt.registerSingleton<RemoteConfigRepository>(
-    RemoteConfigRepositoryImpl(getIt<FirebaseRemote>()),
-  );
-
   // Repository
   getIt.registerSingleton<PreferencesRepository>(
     PreferencesRepositoryImpl(prefsStorage),
@@ -53,25 +47,36 @@ Future<void> initDependencies() async {
     () => SetOnboardingComplete(getIt<PreferencesRepository>()),
   );
 
-  final auth = FirebaseAuth.instance;
+  // Firebase services - iOS only
+  if (Platform.isIOS) {
+    //FB Remote
+    final fbRemote = await FirebaseRemote.init();
+    getIt.registerSingleton<FirebaseRemote>(fbRemote);
 
-  // IdentityManager
-  getIt.registerSingleton<IdentityManager>(IdentityManager(auth));
+    getIt.registerSingleton<RemoteConfigRepository>(
+      RemoteConfigRepositoryImpl(getIt<FirebaseRemote>()),
+    );
 
-  // low-level wrapper
-  final firebasePush = FirebasePush();
-  getIt.registerSingleton<FirebasePush>(firebasePush);
+    final auth = FirebaseAuth.instance;
 
-  // repo
-  getIt.registerSingleton<PushRepository>(PushRepositoryImpl(firebasePush));
+    // IdentityManager
+    getIt.registerSingleton<IdentityManager>(IdentityManager(auth));
 
-  //usecase
-  getIt.registerLazySingleton<InitPushNotifications>(
-    () => InitPushNotifications(getIt<PushRepository>()),
-  );
+    // low-level wrapper
+    final firebasePush = FirebasePush();
+    getIt.registerSingleton<FirebasePush>(firebasePush);
 
-  final identity = await IdentityService().init();
-  getIt.registerSingleton<IdentityService>(identity);
+    // repo
+    getIt.registerSingleton<PushRepository>(PushRepositoryImpl(firebasePush));
+
+    //usecase
+    getIt.registerLazySingleton<InitPushNotifications>(
+      () => InitPushNotifications(getIt<PushRepository>()),
+    );
+
+    final identity = await IdentityService().init();
+    getIt.registerSingleton<IdentityService>(identity);
+  }
 
   getIt.registerSingleton<BrowserWarmUp>(BrowserWarmUp());
 
@@ -87,12 +92,15 @@ Future<void> initDependencies() async {
     () => EngagementRate(prefs: getIt<PreferencesRepository>()),
   );
 
-  getIt.registerLazySingleton<HomeController>(
-    () => HomeController(
-      getIt<PreloadWebView>(),
-      getIt<PushRepository>(),
-      getIt<IdentityService>(),
-      getIt<IdentityManager>(),
-    ),
-  );
+  // HomeController - iOS only (depends on Firebase services)
+  if (Platform.isIOS) {
+    getIt.registerLazySingleton<HomeController>(
+      () => HomeController(
+        getIt<PreloadWebView>(),
+        getIt<PushRepository>(),
+        getIt<IdentityService>(),
+        getIt<IdentityManager>(),
+      ),
+    );
+  }
 }

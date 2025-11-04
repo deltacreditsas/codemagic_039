@@ -1,4 +1,4 @@
-package com.payday.advance.borrow.money
+package com.payday.borrow.money.advance.app
 
 import io.flutter.embedding.android.FlutterActivity
 

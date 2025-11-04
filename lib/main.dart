@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -19,9 +21,13 @@ import 'sections/splash/providers/survey_notifier.dart';
 void main() async {
   final wfb = WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await CrashlyticsService.init();
+  if (Platform.isIOS) {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
 
+    await CrashlyticsService.init();
+  }
   await initDependencies();
 
   final repository = TextSectionRepository();
@@ -29,8 +35,10 @@ void main() async {
 
   final provider = TextSectionProvider(loadLegalDocument: loadPolicyDocument);
 
-  await provider.preloadSections('terms', 'assets/texts/terms.yaml');
-  await provider.preloadSections('privacy', 'assets/texts/privacy.yaml');
+  // Load platform-specific legal documents
+  final platformSuffix = Platform.isIOS ? 'ios' : 'android';
+  await provider.preloadSections('terms', 'assets/texts/terms_$platformSuffix.yaml');
+  await provider.preloadSections('privacy', 'assets/texts/privacy_$platformSuffix.yaml');
 
   await WakelockPlus.enable();
 

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,8 +28,15 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await getIt<PreloadWebView>().call(ConstKey.urlWV);
-      await getIt<EngagementRate>().maybeShowReview();
+      // iOS: Preload webview with Firebase params
+      if (Platform.isIOS) {
+        await getIt<PreloadWebView>().call(ConstKey.urlWV);
+        await getIt<EngagementRate>().maybeShowReview();
+      }
+      // Android: Preload webview without Firebase params
+      else {
+        await getIt<PreloadWebView>().call(ConstKey.urlANDRWV);
+      }
     });
   }
 

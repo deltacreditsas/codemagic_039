@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
@@ -18,7 +20,7 @@ extension WebLauncher on BuildContext {
       push('/${BrowserPage.id}', extra: preloader);
     } else {
       _log.i('Opening WebView with URL');
-      const url = ConstKey.urlWV;
+      final url = Platform.isIOS ? ConstKey.urlWV : ConstKey.urlANDRWV;
       push('/${BrowserPage.id}', extra: url);
     }
   }

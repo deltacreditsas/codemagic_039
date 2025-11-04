@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -29,13 +31,16 @@ class BrowserWarmUp extends ChangeNotifier {
             _pageLoaded = false;
             notifyListeners();
 
-            FirebaseCrashlytics.instance.recordError(
-              Exception(
-                'Web resource error: ${err.errorCode} - ${err.description}',
-              ),
-              StackTrace.current,
-              reason: 'WebView warmup failed',
-            );
+            // Only use Crashlytics on iOS
+            if (Platform.isIOS) {
+              FirebaseCrashlytics.instance.recordError(
+                Exception(
+                  'Web resource error: ${err.errorCode} - ${err.description}',
+                ),
+                StackTrace.current,
+                reason: 'WebView warmup failed',
+              );
+            }
           },
         ),
       );
@@ -47,11 +52,15 @@ class BrowserWarmUp extends ChangeNotifier {
       _pageLoaded = false;
       _webController = null;
       notifyListeners();
-      FirebaseCrashlytics.instance.recordError(
-        e,
-        st,
-        reason: 'WarmUp loadRequest failed',
-      );
+
+      // Only use Crashlytics on iOS
+      if (Platform.isIOS) {
+        FirebaseCrashlytics.instance.recordError(
+          e,
+          st,
+          reason: 'WarmUp loadRequest failed',
+        );
+      }
 
       rethrow;
     }

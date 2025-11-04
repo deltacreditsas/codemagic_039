@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.1+2
 
 environment:
-  sdk: ^3.9.0
+  sdk: ^3.8.0
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -58,7 +58,7 @@ dependencies:
 
   # WebView
   webview_flutter: ^4.13.0
-  webview_flutter_android: ^4.10.2
+  webview_flutter_android: ^4.10.1
 
   # Utilities
   logger: ^2.6.1

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
@@ -17,25 +19,31 @@ class SplashNotifier extends ChangeNotifier {
   final prefs = GetIt.instance<PreferencesRepository>();
 
   Future<void> init() async {
-    //Remote Config
-    final rcRepo = getIt<RemoteConfigRepository>();
-    // Prefs
-    final chance = rcRepo.getSurveyChance();
-
     await Future.delayed(const Duration(milliseconds: 500));
 
-    await getIt<InitPushNotifications>()();
+    // iOS: Full Firebase flow with Remote Config and Push
+    if (Platform.isIOS) {
+      //Remote Config
+      final rcRepo = getIt<RemoteConfigRepository>();
+      // Prefs
+      final chance = rcRepo.getSurveyChance();
 
-    final shouldShowSurvey = !prefs.isCustomReviewShown();
+      await getIt<InitPushNotifications>()();
 
-    final randomNumber = (DateTime.now().millisecondsSinceEpoch % 100) + 1;
-    _log.i('Random roll = $randomNumber (chance = $chance)');
+      final shouldShowSurvey = !prefs.isCustomReviewShown();
 
-    await getIt<EngagementRate>().registerLaunch();
+      final randomNumber = (DateTime.now().millisecondsSinceEpoch % 100) + 1;
+      _log.i('Random roll = $randomNumber (chance = $chance)');
 
-    if (shouldShowSurvey && (randomNumber <= chance)) {
-      state = SplashState.showSurvey;
+      await getIt<EngagementRate>().registerLaunch();
+
+      if (shouldShowSurvey && (randomNumber <= chance)) {
+        state = SplashState.showSurvey;
+      } else {
+        state = SplashState.navigateHome;
+      }
     } else {
+      // Android: Simple flow - go straight to home
       state = SplashState.navigateHome;
     }
 

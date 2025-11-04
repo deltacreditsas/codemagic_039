@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
@@ -68,20 +70,26 @@ class _BrowserPageState extends State<BrowserPage> {
             return NavigationDecision.prevent;
           }
         } catch (e, st) {
-          FirebaseCrashlytics.instance.recordError(
-            e,
-            st,
-            reason: 'Failed to handle navigation request: ${req.url}',
-          );
+          // Only use Crashlytics on iOS
+          if (Platform.isIOS) {
+            FirebaseCrashlytics.instance.recordError(
+              e,
+              st,
+              reason: 'Failed to handle navigation request: ${req.url}',
+            );
+          }
         }
         return NavigationDecision.navigate;
       },
       onWebResourceError: (err) {
-        FirebaseCrashlytics.instance.recordError(
-          Exception('BrowserPage WebResourceError: ${err.description}'),
-          StackTrace.current,
-          reason: 'WebView navigation error',
-        );
+        // Only use Crashlytics on iOS
+        if (Platform.isIOS) {
+          FirebaseCrashlytics.instance.recordError(
+            Exception('BrowserPage WebResourceError: ${err.description}'),
+            StackTrace.current,
+            reason: 'WebView navigation error',
+          );
+        }
       },
     );
   }
@@ -93,11 +101,14 @@ class _BrowserPageState extends State<BrowserPage> {
         await _webController.loadRequest(Uri.parse(_initialUrl));
       }
     } catch (e, st) {
-      FirebaseCrashlytics.instance.recordError(
-        e,
-        st,
-        reason: 'Reload with URL failed',
-      );
+      // Only use Crashlytics on iOS
+      if (Platform.isIOS) {
+        FirebaseCrashlytics.instance.recordError(
+          e,
+          st,
+          reason: 'Reload with URL failed',
+        );
+      }
     }
   }
 
