@@ -7,6 +7,10 @@ plugins {
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
+
+import java.util.Properties
+import java.io.FileInputStream
+
 val keystoreProperties = Properties()
 val keystorePropertiesFile = rootProject.file("key.properties")
 if (keystorePropertiesFile.exists()) {
@@ -48,7 +52,7 @@ android {
 
    buildTypes {
        release {
-           signingConfig signingConfigs.release
+           signingConfig = signingConfigs.getByName("release")
        }
    }
 }
