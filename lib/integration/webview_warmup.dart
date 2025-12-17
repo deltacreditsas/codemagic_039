@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -30,17 +27,6 @@ class BrowserWarmUp extends ChangeNotifier {
           onWebResourceError: (err) {
             _pageLoaded = false;
             notifyListeners();
-
-            // Only use Crashlytics on iOS
-            if (Platform.isIOS) {
-              FirebaseCrashlytics.instance.recordError(
-                Exception(
-                  'Web resource error: ${err.errorCode} - ${err.description}',
-                ),
-                StackTrace.current,
-                reason: 'WebView warmup failed',
-              );
-            }
           },
         ),
       );
@@ -48,20 +34,10 @@ class BrowserWarmUp extends ChangeNotifier {
     try {
       await controller.loadRequest(Uri.parse(url));
       _webController = controller;
-    } catch (e, st) {
+    } catch (e, _) {
       _pageLoaded = false;
       _webController = null;
       notifyListeners();
-
-      // Only use Crashlytics on iOS
-      if (Platform.isIOS) {
-        FirebaseCrashlytics.instance.recordError(
-          e,
-          st,
-          reason: 'WarmUp loadRequest failed',
-        );
-      }
-
       rethrow;
     }
   }
